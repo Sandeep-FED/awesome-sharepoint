@@ -4,5 +4,7 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://Sandeep-FED.github.io',
+  base: '/awesome-sharepoint',
   integrations: [react()],
 });
