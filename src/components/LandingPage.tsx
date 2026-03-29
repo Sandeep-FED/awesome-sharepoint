@@ -6,26 +6,24 @@ import {
   Card,
   Badge,
   Divider,
-} from "@fluentui/react-components";
+  TabList,
+  Tab,
+} from "@fluentui/react-components"
 import {
   OpenRegular,
   CodeRegular,
   PeopleRegular,
-  RocketRegular,
-  ShieldCheckmarkRegular,
   StarRegular,
   BoxRegular,
   GridRegular,
   DataBarVerticalRegular,
   SettingsRegular,
-  SearchRegular,
   ArrowRightRegular,
   HeartRegular,
   BookOpenRegular,
-  ChatRegular,
   WeatherMoonRegular,
   WeatherSunnyRegular,
-} from "@fluentui/react-icons";
+} from "@fluentui/react-icons"
 import React, { useState, useEffect, useRef } from "react";
 
 /* ═══════════════════════════════════════
@@ -51,146 +49,123 @@ function useReveal<T extends HTMLElement>() {
   return ref;
 }
 
+interface ResourceItem {
+  title: string
+  description: string
+  url: string
+  tag: string
+  tagColor: "brand" | "warning" | "success" | "important"
+}
+
+interface CategoryData {
+  id: string
+  title: string
+  description: string
+  items: ResourceItem[]
+}
+
+interface LandingPageProps {
+  categories: CategoryData[]
+}
+
+/* ═══════════════════════════════════════
+   ICON MAP
+   ═══════════════════════════════════════ */
+const categoryIconMap: Record<string, React.ReactElement> = {
+  "sp-development": <CodeRegular />,
+  "api-libraries": <DataBarVerticalRegular />,
+  "ui-libraries": <GridRegular />,
+  blogs: <BookOpenRegular />,
+  tools: <SettingsRegular />,
+  samples: <StarRegular />,
+}
+
+function getCategoryIcon(categoryId: string): React.ReactElement {
+  return categoryIconMap[categoryId] ?? <BoxRegular />
+}
+
 /* ═══════════════════════════════════════
    DATA
    ═══════════════════════════════════════ */
-const categories = [
-  {
-    id: "getting-started",
-    title: "Getting Started",
-    icon: <RocketRegular />,
-    description: "Essential resources to begin your SharePoint journey",
-    items: [
-      { title: "SharePoint Documentation", description: "Official Microsoft documentation for SharePoint Online and SharePoint Server.", url: "https://learn.microsoft.com/en-us/sharepoint/", tag: "Docs", tagColor: "brand" as const },
-      { title: "SharePoint Look Book", description: "Discover beautiful, powerful SharePoint site designs and templates.", url: "https://lookbook.microsoft.com/", tag: "Templates", tagColor: "important" as const },
-      { title: "SharePoint Admin Guide", description: "Comprehensive guide for SharePoint Online administration.", url: "https://learn.microsoft.com/en-us/sharepoint/sharepoint-online", tag: "Admin", tagColor: "severe" as const },
-      { title: "SharePoint Modernization", description: "Tools and guidance to modernize classic SharePoint sites.", url: "https://learn.microsoft.com/en-us/sharepoint/dev/transform/modernize-classic-sites", tag: "Guide", tagColor: "brand" as const },
-    ],
-  },
-  {
-    id: "spfx",
-    title: "SharePoint Framework (SPFx)",
-    icon: <CodeRegular />,
-    description: "Build modern web parts and extensions with SPFx",
-    items: [
-      { title: "SPFx Documentation", description: "Official documentation for the SharePoint Framework development model.", url: "https://learn.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview", tag: "Docs", tagColor: "brand" as const },
-      { title: "sp-dev-fx-webparts", description: "Community-driven samples of SharePoint Framework client-side web parts.", url: "https://github.com/pnp/sp-dev-fx-webparts", tag: "GitHub", tagColor: "success" as const },
-      { title: "sp-dev-fx-extensions", description: "SharePoint Framework extensions samples — command sets, field customizers & more.", url: "https://github.com/pnp/sp-dev-fx-extensions", tag: "GitHub", tagColor: "success" as const },
-      { title: "SPFx Fast Serve", description: "Speed up your SPFx development with fast-serve — hot reloading for SPFx.", url: "https://github.com/nickvdyck/spfx-fast-serve", tag: "Tool", tagColor: "warning" as const },
-    ],
-  },
-  {
-    id: "pnp",
-    title: "PnP (Patterns & Practices)",
-    icon: <PeopleRegular />,
-    description: "Community-driven tools, libraries, and guidance from Microsoft 365 PnP",
-    items: [
-      { title: "PnPjs", description: "Fluent JavaScript library for consuming SharePoint, Graph, and Microsoft 365 REST APIs.", url: "https://github.com/pnp/pnpjs", tag: "Library", tagColor: "brand" as const },
-      { title: "PnP PowerShell", description: "Cross-platform PowerShell module for SharePoint Online, Teams, Planner, and more.", url: "https://github.com/pnp/powershell", tag: "GitHub", tagColor: "success" as const },
-      { title: "PnP Provisioning Engine", description: "Template-based provisioning for SharePoint sites — automate site creation at scale.", url: "https://learn.microsoft.com/en-us/sharepoint/dev/solution-guidance/pnp-provisioning-engine-and-the-core-library", tag: "Docs", tagColor: "brand" as const },
-      { title: "PnP Modern Search", description: "Open-source modern search web parts for SharePoint Online.", url: "https://github.com/microsoft-search/pnp-modern-search", tag: "GitHub", tagColor: "success" as const },
-    ],
-  },
-  {
-    id: "apis",
-    title: "APIs & Graph",
-    icon: <DataBarVerticalRegular />,
-    description: "Interact with SharePoint data through REST APIs and Microsoft Graph",
-    items: [
-      { title: "SharePoint REST API", description: "Reference for SharePoint REST endpoints — working with lists, items, files & more.", url: "https://learn.microsoft.com/en-us/sharepoint/dev/sp-add-ins/get-to-know-the-sharepoint-rest-service", tag: "Docs", tagColor: "brand" as const },
-      { title: "Microsoft Graph - SharePoint", description: "Use Microsoft Graph to access SharePoint sites, lists, drives, and content.", url: "https://learn.microsoft.com/en-us/graph/api/resources/sharepoint?view=graph-rest-1.0", tag: "Docs", tagColor: "brand" as const },
-      { title: "Graph Explorer", description: "Interactive tool to explore and test Microsoft Graph API calls in the browser.", url: "https://developer.microsoft.com/en-us/graph/graph-explorer", tag: "Tool", tagColor: "warning" as const },
-      { title: "SharePoint CSOM", description: "Client-Side Object Model reference for SharePoint Server and Online.", url: "https://learn.microsoft.com/en-us/sharepoint/dev/sp-add-ins/complete-basic-operations-using-sharepoint-client-library-code", tag: "Docs", tagColor: "brand" as const },
-    ],
-  },
-  {
-    id: "governance",
-    title: "Governance & Security",
-    icon: <ShieldCheckmarkRegular />,
-    description: "Best practices for governance, compliance, and securing your SharePoint environment",
-    items: [
-      { title: "SharePoint Security Guide", description: "Security best practices for SharePoint Online administration.", url: "https://learn.microsoft.com/en-us/sharepoint/security-for-sharepoint-server/security-for-sharepoint-server", tag: "Docs", tagColor: "brand" as const },
-      { title: "Sensitivity Labels", description: "Apply sensitivity labels to protect SharePoint sites and documents.", url: "https://learn.microsoft.com/en-us/purview/sensitivity-labels-sharepoint-onedrive-files", tag: "Guide", tagColor: "important" as const },
-      { title: "Sharing & Permissions", description: "Configure external sharing and manage permissions across site collections.", url: "https://learn.microsoft.com/en-us/sharepoint/turn-external-sharing-on-or-off", tag: "Admin", tagColor: "severe" as const },
-      { title: "Information Barriers", description: "Set up information barrier policies in SharePoint and OneDrive.", url: "https://learn.microsoft.com/en-us/purview/information-barriers-sharepoint", tag: "Guide", tagColor: "important" as const },
-    ],
-  },
-  {
-    id: "community",
-    title: "Community & Learning",
-    icon: <ChatRegular />,
-    description: "Connect, learn, and grow with the SharePoint community",
-    items: [
-      { title: "Microsoft 365 PnP Community", description: "Join the Patterns & Practices community — calls, samples, and guidance.", url: "https://pnp.github.io/", tag: "Community", tagColor: "brand" as const },
-      { title: "SharePoint StackExchange", description: "Q&A community for SharePoint developers and administrators.", url: "https://sharepoint.stackexchange.com/", tag: "Q&A", tagColor: "warning" as const },
-      { title: "Microsoft 365 Developer Blog", description: "Latest news and updates from the Microsoft 365 dev team.", url: "https://devblogs.microsoft.com/microsoft365dev/", tag: "Blog", tagColor: "important" as const },
-      { title: "SharePoint Framework Training", description: "Free Microsoft Learn modules for SPFx development.", url: "https://learn.microsoft.com/en-us/training/modules/sharepoint-spfx-get-started/", tag: "Training", tagColor: "success" as const },
-    ],
-  },
-];
 
 const quickLinks = [
-  { label: "SPFx Docs", url: "https://learn.microsoft.com/en-us/sharepoint/dev/spfx/sharepoint-framework-overview", icon: <CodeRegular /> },
-  { label: "PnPjs", url: "https://github.com/pnp/pnpjs", icon: <BoxRegular /> },
-  { label: "Graph Explorer", url: "https://developer.microsoft.com/en-us/graph/graph-explorer", icon: <SearchRegular /> },
-  { label: "SP Look Book", url: "https://lookbook.microsoft.com/", icon: <GridRegular /> },
-  { label: "PnP PowerShell", url: "https://github.com/pnp/powershell", icon: <SettingsRegular /> },
-  { label: "SP Starter Kit", url: "https://github.com/pnp/sp-starter-kit", icon: <RocketRegular /> },
-];
+  {
+    label: "SPFx Toolkit",
+    url: "https://pnp.github.io/vscode-viva/",
+    icon: <CodeRegular />,
+  },
+  { label: "PnPJS", url: "https://pnp.github.io/pnpjs/", icon: <BoxRegular /> },
+  {
+    label: "Fluent UI v9",
+    url: "https://storybooks.fluentui.dev/react/?path=/docs/concepts-introduction--docs",
+    icon: <GridRegular />,
+  },
+  {
+    label: "SP Formatter",
+    url: "https://github.com/pnp/sp-formatter",
+    icon: <SettingsRegular />,
+  },
+  {
+    label: "SP Dev Docs",
+    url: "https://learn.microsoft.com/en-us/sharepoint/dev/",
+    icon: <BookOpenRegular />,
+  },
+  {
+    label: "Samples",
+    url: "https://adoption.microsoft.com/en-us/sample-solution-gallery/?keyword=&sort-by=updateDateTime-true&page=1&product=SharePoint",
+    icon: <StarRegular />,
+  },
+]
 
 const stats = [
   { value: "6+", label: "Categories" },
-  { value: "24+", label: "Resources" },
-  { value: "10+", label: "GitHub Repos" },
+  { value: "16+", label: "Resources" },
+  { value: "6+", label: "GitHub Repos" },
   { value: "100%", label: "Free & Open" },
-];
+]
 
-/* ═══════════════════════════════════════
-   COMPONENT
-   ═══════════════════════════════════════ */
-export default function LandingPage() {
-  const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const dark = theme === "dark";
+export default function LandingPage({ categories = [] }: LandingPageProps) {
+  const [activeCategory, setActiveCategory] = useState<string | null>(null)
+  const [theme, setTheme] = useState<"light" | "dark">("dark")
+  const dark = theme === "dark"
 
-  const heroRef = useReveal<HTMLDivElement>();
-  const statsRef = useReveal<HTMLDivElement>();
-  const quickRef = useReveal<HTMLDivElement>();
-  const ctaRef = useReveal<HTMLDivElement>();
+  const heroRef = useReveal<HTMLDivElement>()
+  const statsRef = useReveal<HTMLDivElement>()
+  const quickRef = useReveal<HTMLDivElement>()
+  const ctaRef = useReveal<HTMLDivElement>()
 
   return (
     <FluentProvider theme={dark ? webDarkTheme : webLightTheme}>
       <div className={`sp-root ${dark ? "sp-dark" : "sp-light"}`}>
-
         {/* ── Animated background orbs ── */}
-        <div className="orb orb-1" />
-        <div className="orb orb-2" />
-        <div className="orb orb-3" />
+        <div className='orb orb-1' />
+        <div className='orb orb-2' />
+        <div className='orb orb-3' />
 
         {/* ── Nav ── */}
-        <nav className="sp-nav">
-          <div className="sp-nav-inner">
-            <div className="sp-logo-group">
-              <div className="sp-logo-mark">SP</div>
-              <span className="sp-logo-text">Awesome SharePoint</span>
+        <nav className='sp-nav'>
+          <div className='sp-nav-inner'>
+            <div className='sp-logo-group'>
+              <div className='sp-logo-mark'>SP</div>
+              <span className='sp-logo-text'>Awesome SharePoint</span>
             </div>
-            <div className="sp-nav-actions">
+            <div className='sp-nav-actions'>
               <Button
-                appearance="subtle"
-                size="small"
+                appearance='subtle'
+                size='small'
                 icon={dark ? <WeatherSunnyRegular /> : <WeatherMoonRegular />}
                 onClick={() => setTheme(dark ? "light" : "dark")}
               >
                 {dark ? "Light" : "Dark"}
               </Button>
               <Button
-                appearance="primary"
-                size="small"
+                appearance='primary'
+                size='small'
                 icon={<StarRegular />}
-                as="a"
-                href="https://github.com/pnp"
-                target="_blank"
-                className="sp-github-btn"
+                as='a'
+                href='https://github.com/pnp'
+                target='_blank'
+                className='sp-github-btn'
               >
                 Star on GitHub
               </Button>
@@ -199,38 +174,46 @@ export default function LandingPage() {
         </nav>
 
         {/* ── Hero ── */}
-        <section className="sp-hero">
-          <div ref={heroRef} className="reveal-target sp-hero-content">
-            <Badge appearance="outline" color="brand" size="large" className="sp-hero-badge">
+        <section className='sp-hero'>
+          <div ref={heroRef} className='reveal-target sp-hero-content'>
+            <Badge
+              appearance='outline'
+              color='brand'
+              size='large'
+              className='sp-hero-badge'
+            >
               Open Source Resource Hub
             </Badge>
-            <h1 className="sp-hero-title">
-              Awesome<br />SharePoint
+            <h1 className='sp-hero-title'>
+              Awesome
+              <br />
+              SharePoint
             </h1>
-            <p className="sp-hero-sub">
-              A curated collection of essential documentation, GitHub repositories, tools,
-              and community resources for SharePoint developers and administrators.
+            <p className='sp-hero-sub'>
+              A curated collection of essential documentation, GitHub
+              repositories, tools, and community resources for SharePoint
+              developers and administrators.
             </p>
-            <div className="sp-hero-actions">
+            <div className='sp-hero-actions'>
               <Button
-                appearance="primary"
-                size="large"
+                appearance='primary'
+                size='large'
                 icon={<ArrowRightRegular />}
-                iconPosition="after"
-                as="a"
-                href="#resources"
-                className="sp-btn-primary"
+                iconPosition='after'
+                as='a'
+                href='#resources'
+                className='sp-btn-primary'
               >
                 Explore Resources
               </Button>
               <Button
-                appearance="outline"
-                size="large"
+                appearance='outline'
+                size='large'
                 icon={<BookOpenRegular />}
-                as="a"
-                href="https://learn.microsoft.com/en-us/sharepoint/"
-                target="_blank"
-                className="sp-btn-outline"
+                as='a'
+                href='https://learn.microsoft.com/en-us/sharepoint/'
+                target='_blank'
+                className='sp-btn-outline'
               >
                 Official Docs
               </Button>
@@ -238,29 +221,33 @@ export default function LandingPage() {
           </div>
 
           {/* Stats */}
-          <div ref={statsRef} className="reveal-target sp-stats">
+          <div ref={statsRef} className='reveal-target sp-stats'>
             {stats.map((s, i) => (
-              <div key={s.label} className="sp-stat" style={{ animationDelay: `${i * 0.1}s` }}>
-                <span className="sp-stat-value">{s.value}</span>
-                <span className="sp-stat-label">{s.label}</span>
+              <div
+                key={s.label}
+                className='sp-stat'
+                style={{ animationDelay: `${i * 0.1}s` }}
+              >
+                <span className='sp-stat-value'>{s.value}</span>
+                <span className='sp-stat-label'>{s.label}</span>
               </div>
             ))}
           </div>
         </section>
 
         {/* ── Quick Links ── */}
-        <section ref={quickRef} className="reveal-target sp-quick-section">
-          <div className="sp-quick-links">
+        <section ref={quickRef} className='reveal-target sp-quick-section'>
+          <div className='sp-quick-links'>
             {quickLinks.map((link, i) => (
               <Button
                 key={link.label}
-                as="a"
+                as='a'
                 href={link.url}
-                target="_blank"
-                appearance="subtle"
+                target='_blank'
+                appearance='subtle'
                 icon={link.icon}
-                size="medium"
-                className="sp-quick-pill"
+                size='medium'
+                className='sp-quick-pill'
                 style={{ animationDelay: `${i * 0.06}s` }}
               >
                 {link.label}
@@ -269,36 +256,31 @@ export default function LandingPage() {
           </div>
         </section>
 
-        <Divider className="sp-divider" />
+        <Divider className='sp-divider' />
 
         {/* ── Resources Header + Filter ── */}
-        <section id="resources" className="sp-resources-header">
-          <h2 className="sp-section-title">Resources</h2>
-          <p className="sp-section-sub">Everything you need for SharePoint development and administration</p>
-          <div className="sp-filter-pills">
-            <Button
-              appearance={activeCategory === null ? "primary" : "subtle"}
-              size="small"
-              shape="circular"
-              onClick={() => setActiveCategory(null)}
-              className="sp-pill"
-            >
-              All
-            </Button>
+        <section id='resources' className='sp-resources-header'>
+          <h2 className='sp-section-title'>Resources</h2>
+          <p className='sp-section-sub'>
+            Everything you need for SharePoint development and administration
+          </p>
+          <TabList
+            selectedValue={activeCategory ?? "all"}
+            onTabSelect={(_, data) =>
+              setActiveCategory(
+                data.value === "all" ? null : (data.value as string),
+              )
+            }
+            className='sp-tabs'
+            size='small'
+          >
+            <Tab value='all'>All</Tab>
             {categories.map((cat) => (
-              <Button
-                key={cat.id}
-                appearance={activeCategory === cat.id ? "primary" : "subtle"}
-                size="small"
-                shape="circular"
-                icon={cat.icon}
-                onClick={() => setActiveCategory(activeCategory === cat.id ? null : cat.id)}
-                className="sp-pill"
-              >
+              <Tab key={cat.id} value={cat.id} icon={getCategoryIcon(cat.id)}>
                 {cat.title}
-              </Button>
+              </Tab>
             ))}
-          </div>
+          </TabList>
         </section>
 
         {/* ── Resource Cards ── */}
@@ -309,34 +291,35 @@ export default function LandingPage() {
           ))}
 
         {/* ── CTA ── */}
-        <section className="sp-cta-wrapper">
-          <div ref={ctaRef} className="reveal-target sp-cta">
-            <div className="sp-cta-glow" />
-            <h2 className="sp-cta-title">Contribute to Awesome SharePoint</h2>
-            <p className="sp-cta-desc">
-              Know a great SharePoint resource that's missing? Contributions are welcome!
-              Help the community by sharing your favorite tools, repos, and guides.
+        <section className='sp-cta-wrapper'>
+          <div ref={ctaRef} className='reveal-target sp-cta'>
+            <div className='sp-cta-glow' />
+            <h2 className='sp-cta-title'>Contribute to Awesome SharePoint</h2>
+            <p className='sp-cta-desc'>
+              Know a great SharePoint resource that's missing? Contributions are
+              welcome! Help the community by sharing your favorite tools, repos,
+              and guides.
             </p>
-            <div className="sp-cta-actions">
+            <div className='sp-cta-actions'>
               <Button
-                appearance="primary"
-                size="large"
+                appearance='primary'
+                size='large'
                 icon={<HeartRegular />}
-                as="a"
-                href="https://github.com/pnp"
-                target="_blank"
-                className="sp-btn-primary"
+                as='a'
+                href='https://github.com/pnp'
+                target='_blank'
+                className='sp-btn-primary'
               >
                 Contribute
               </Button>
               <Button
-                appearance="outline"
-                size="large"
+                appearance='outline'
+                size='large'
                 icon={<PeopleRegular />}
-                as="a"
-                href="https://pnp.github.io/"
-                target="_blank"
-                className="sp-btn-outline"
+                as='a'
+                href='https://pnp.github.io/'
+                target='_blank'
+                className='sp-btn-outline'
               >
                 Join PnP Community
               </Button>
@@ -345,14 +328,17 @@ export default function LandingPage() {
         </section>
 
         {/* ── Footer ── */}
-        <footer className="sp-footer">
-          <div className="sp-footer-inner">
-            <div className="sp-footer-brand">
-              <div className="sp-logo-mark sp-logo-mark--sm">SP</div>
-              <span className="sp-logo-text sp-logo-text--sm">Awesome SharePoint</span>
+        <footer className='sp-footer'>
+          <div className='sp-footer-inner'>
+            <div className='sp-footer-brand'>
+              <div className='sp-logo-mark sp-logo-mark--sm'>SP</div>
+              <span className='sp-logo-text sp-logo-text--sm'>
+                Awesome SharePoint
+              </span>
             </div>
-            <p className="sp-footer-copy">
-              Built with Astro & Fluent UI. Not affiliated with Microsoft. For the community, by the community.
+            <p className='sp-footer-copy'>
+              Built with Astro & Fluent UI. Not affiliated with Microsoft. For
+              the community, by the community.
             </p>
           </div>
         </footer>
@@ -633,15 +619,11 @@ export default function LandingPage() {
           font-size: 15px;
           margin: 0 0 28px;
         }
-        .sp-filter-pills {
-          display: flex;
-          gap: 8px;
+        .sp-tabs {
           justify-content: center;
           flex-wrap: wrap;
           margin-bottom: 36px;
         }
-        .sp-pill { transition: all 0.2s ease !important; }
-        .sp-pill:hover { transform: translateY(-1px) !important; }
 
         /* ─── Category Section ─── */
         .sp-category {
@@ -831,50 +813,46 @@ export default function LandingPage() {
         }
       `}</style>
     </FluentProvider>
-  );
+  )
 }
 
 /* ═══════════════════════════════════════
    CATEGORY SUB-COMPONENT (with its own reveal)
    ═══════════════════════════════════════ */
-function CategorySection({
-  category,
-}: {
-  category: (typeof categories)[number];
-}) {
-  const ref = useReveal<HTMLElement>();
+function CategorySection({ category }: { category: CategoryData }) {
+  const ref = useReveal<HTMLElement>()
   return (
-    <section ref={ref} className="reveal-target sp-category">
-      <div className="sp-category-header">
-        <div className="sp-category-icon">{category.icon}</div>
+    <section ref={ref} className='reveal-target sp-category'>
+      <div className='sp-category-header'>
+        <div className='sp-category-icon'>{getCategoryIcon(category.id)}</div>
         <div>
-          <h3 className="sp-category-title">{category.title}</h3>
-          <p className="sp-category-desc">{category.description}</p>
+          <h3 className='sp-category-title'>{category.title}</h3>
+          <p className='sp-category-desc'>{category.description}</p>
         </div>
       </div>
-      <div className="sp-card-grid">
+      <div className='sp-card-grid'>
         {category.items.map((item, i) => (
           <a
             key={item.title}
             href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="sp-card-link"
+            target='_blank'
+            rel='noopener noreferrer'
+            className='sp-card-link'
             style={{ animationDelay: `${i * 0.08}s` }}
           >
-            <Card className="sp-card">
-              <div className="sp-card-top">
-                <Badge appearance="filled" color={item.tagColor} size="small">
+            <Card className='sp-card'>
+              <div className='sp-card-top'>
+                <Badge appearance='filled' color={item.tagColor} size='small'>
                   {item.tag}
                 </Badge>
-                <OpenRegular className="sp-card-arrow" />
+                <OpenRegular className='sp-card-arrow' />
               </div>
-              <div className="sp-card-title">{item.title}</div>
-              <div className="sp-card-desc">{item.description}</div>
+              <div className='sp-card-title'>{item.title}</div>
+              <div className='sp-card-desc'>{item.description}</div>
             </Card>
           </a>
         ))}
       </div>
     </section>
-  );
+  )
 }
