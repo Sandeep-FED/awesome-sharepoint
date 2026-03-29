@@ -6,11 +6,11 @@ items:
   - title: PnP Community Blog
     description: Community-contributed articles on SharePoint, Microsoft 365, and Power Platform.
     url: https://pnp.github.io/blog/
-    tag: Blog
+    tag: Community
     tagColor: important
   - title: Microsoft SharePoint Blog
     description: Official Microsoft blog with product announcements, roadmap updates, and best practices.
     url: https://techcommunity.microsoft.com/category/content_management/blog/spblog
-    tag: Blog
-    tagColor: important
+    tag: Official
+    tagColor: brand
 ---
