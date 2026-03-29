@@ -19,7 +19,7 @@ import {
 } from "@fluentui/react-icons"
 import { useState } from "react"
 import { useReveal } from "../../hooks/useReveal"
-import { getCategoryIcon, stats } from "./constants"
+import { getCategoryIcon } from "./constants"
 import { CategorySection } from "./CategorySection"
 import type { LandingPageProps } from "./types"
 import "../../styles/landing.css"
@@ -30,7 +30,6 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
   const dark = theme === "dark"
 
   const heroRef = useReveal<HTMLDivElement>()
-  const statsRef = useReveal<HTMLDivElement>()
   const ctaRef = useReveal<HTMLDivElement>()
 
   return (
@@ -117,20 +116,6 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
                 Official Docs
               </Button>
             </div>
-          </div>
-
-          {/* Stats */}
-          <div ref={statsRef} className='reveal-target sp-stats'>
-            {stats.map((s, i) => (
-              <div
-                key={s.label}
-                className='sp-stat'
-                style={{ animationDelay: `${i * 0.1}s` }}
-              >
-                <span className='sp-stat-value'>{s.value}</span>
-                <span className='sp-stat-label'>{s.label}</span>
-              </div>
-            ))}
           </div>
         </section>
 

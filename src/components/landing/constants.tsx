@@ -21,10 +21,3 @@ const categoryIconMap: Record<string, React.ReactElement> = {
 export function getCategoryIcon(categoryId: string): React.ReactElement {
   return categoryIconMap[categoryId] ?? <BoxRegular />
 }
-
-export const stats = [
-  { value: "6+", label: "Categories" },
-  { value: "16+", label: "Resources" },
-  { value: "6+", label: "GitHub Repos" },
-  { value: "100%", label: "Free & Open" },
-]
