@@ -2,9 +2,6 @@ import {
   FluentProvider,
   webDarkTheme,
   webLightTheme,
-  Button,
-  Badge,
-  Divider,
   TabList,
   Tab,
 } from "@fluentui/react-components"
@@ -18,19 +15,18 @@ import {
   WeatherSunnyRegular,
 } from "@fluentui/react-icons"
 import { useState } from "react"
-import { useReveal } from "../../hooks/useReveal"
+import { motion } from "framer-motion"
+import { heroVariants, fadeUpVariants } from "../../animations/variants"
 import { getCategoryIcon } from "./constants"
 import { CategorySection } from "./CategorySection"
 import type { LandingPageProps } from "./types"
+import spLogo from "../../assets/SharePoint.png"
 import "../../styles/landing.css"
 
 export default function LandingPage({ categories = [] }: LandingPageProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
   const [theme, setTheme] = useState<"light" | "dark">("dark")
   const dark = theme === "dark"
-
-  const heroRef = useReveal<HTMLDivElement>()
-  const ctaRef = useReveal<HTMLDivElement>()
 
   return (
     <FluentProvider theme={dark ? webDarkTheme : webLightTheme}>
@@ -41,92 +37,73 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
         <div className='orb orb-3' />
 
         {/* ── Nav ── */}
-        <nav className='sp-nav'>
+        <nav className='sticky top-3 z-100 px-6 max-w-[1200px] mx-auto mt-3'>
           <div className='sp-nav-inner'>
-            <div className='sp-logo-group'>
-              <div className='sp-logo-mark'>SP</div>
-              <span className='sp-logo-text'>Awesome SharePoint</span>
+            <div className='flex items-center gap-2.5'>
+              <img src={spLogo.src} alt="SharePoint" className='size-8 rounded-lg object-contain' />
+              <span className='font-grotesk font-[650] text-[15px] tracking-tight'>Awesome SharePoint</span>
             </div>
-            <div className='sp-nav-actions'>
-              <Button
-                appearance='subtle'
-                size='small'
-                icon={dark ? <WeatherSunnyRegular /> : <WeatherMoonRegular />}
+            <div className='flex items-center gap-1.5'>
+              <button
+                className='sp-nav-icon-btn'
                 onClick={() => setTheme(dark ? "light" : "dark")}
+                aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
               >
-                {dark ? "Light" : "Dark"}
-              </Button>
-              <Button
-                appearance='primary'
-                size='small'
-                icon={<StarRegular />}
-                as='a'
+                {dark ? <WeatherSunnyRegular /> : <WeatherMoonRegular />}
+              </button>
+              <a
                 href='https://github.com/pnp'
                 target='_blank'
+                rel='noopener noreferrer'
                 className='sp-github-btn'
               >
-                Star on GitHub
-              </Button>
+                <StarRegular />
+                <span>Star on GitHub</span>
+              </a>
             </div>
           </div>
         </nav>
 
         {/* ── Hero ── */}
-        <section className='sp-hero'>
-          <div ref={heroRef} className='reveal-target sp-hero-content'>
-            <Badge
-              appearance='outline'
-              color='brand'
-              size='large'
-              className='sp-hero-badge'
-            >
+        <section className='relative z-1 max-w-[1200px] mx-auto px-6 pt-20 pb-12 text-center max-sm:px-5 max-sm:pt-14 max-sm:pb-9'>
+          <motion.div
+            variants={heroVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            <span className='inline-block px-4 py-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] backdrop-blur-sm font-mono text-xs tracking-wider text-[var(--text-secondary)] mb-6'>
               Open Source Resource Hub
-            </Badge>
+            </span>
             <h1 className='sp-hero-title'>
               Awesome
               <br />
               SharePoint
             </h1>
-            <p className='sp-hero-sub'>
+            <p className='text-[clamp(1rem,2vw,1.15rem)] max-w-[580px] mx-auto mb-9 leading-relaxed text-[var(--text-secondary)]'>
               A curated collection of essential documentation, GitHub
               repositories, tools, and community resources for SharePoint
               developers and administrators.
             </p>
-            <div className='sp-hero-actions'>
-              <Button
-                appearance='primary'
-                size='large'
-                icon={<ArrowRightRegular />}
-                iconPosition='after'
-                as='a'
-                href='#resources'
-                className='sp-btn-primary'
-              >
-                Explore Resources
-              </Button>
-              <Button
-                appearance='outline'
-                size='large'
-                icon={<BookOpenRegular />}
-                as='a'
+            <div className='flex gap-3 justify-center flex-wrap'>
+              <a href='#resources' className='sp-pill-btn sp-pill-btn--primary'>
+                <span>Explore Resources</span>
+                <ArrowRightRegular />
+              </a>
+              <a
                 href='https://learn.microsoft.com/en-us/sharepoint/'
                 target='_blank'
-                className='sp-btn-outline'
+                rel='noopener noreferrer'
+                className='sp-pill-btn sp-pill-btn--outline'
               >
-                Official Docs
-              </Button>
+                <BookOpenRegular />
+                <span>Official Docs</span>
+              </a>
             </div>
-          </div>
+          </motion.div>
         </section>
 
-        <Divider className='sp-divider' />
-
-        {/* ── Resources Header + Filter ── */}
-        <section id='resources' className='sp-resources-header'>
-          <h2 className='sp-section-title'>Resources</h2>
-          <p className='sp-section-sub'>
-            Everything you need for SharePoint development and administration
-          </p>
+        {/* ── Resource Filter ── */}
+        <section id='resources' className='max-w-[1200px] mx-auto px-6 pt-12 pb-4 relative z-1'>
           <TabList
             selectedValue={activeCategory ?? "all"}
             onTabSelect={(_, data) =>
@@ -154,52 +131,54 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
           ))}
 
         {/* ── CTA ── */}
-        <section className='sp-cta-wrapper'>
-          <div ref={ctaRef} className='reveal-target sp-cta'>
+        <section className='max-w-[1200px] mx-auto px-6 pt-6 pb-16 relative z-1'>
+          <motion.div
+            className='sp-cta'
+            variants={fadeUpVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.12 }}
+          >
             <div className='sp-cta-glow' />
-            <h2 className='sp-cta-title'>Contribute to Awesome SharePoint</h2>
-            <p className='sp-cta-desc'>
+            <h2 className='font-grotesk text-[clamp(1.5rem,3vw,2rem)] font-bold tracking-tight mb-3'>Contribute to Awesome SharePoint</h2>
+            <p className='text-[var(--text-secondary)] max-w-[500px] mx-auto mb-7 leading-relaxed'>
               Know a great SharePoint resource that's missing? Contributions are
               welcome! Help the community by sharing your favorite tools, repos,
               and guides.
             </p>
-            <div className='sp-cta-actions'>
-              <Button
-                appearance='primary'
-                size='large'
-                icon={<HeartRegular />}
-                as='a'
+            <div className='flex gap-3 justify-center flex-wrap'>
+              <a
                 href='https://github.com/pnp'
                 target='_blank'
-                className='sp-btn-primary'
+                rel='noopener noreferrer'
+                className='sp-pill-btn sp-pill-btn--primary'
               >
-                Contribute
-              </Button>
-              <Button
-                appearance='outline'
-                size='large'
-                icon={<PeopleRegular />}
-                as='a'
+                <HeartRegular />
+                <span>Contribute</span>
+              </a>
+              <a
                 href='https://pnp.github.io/'
                 target='_blank'
-                className='sp-btn-outline'
+                rel='noopener noreferrer'
+                className='sp-pill-btn sp-pill-btn--outline'
               >
-                Join PnP Community
-              </Button>
+                <PeopleRegular />
+                <span>Join PnP Community</span>
+              </a>
             </div>
-          </div>
+          </motion.div>
         </section>
 
         {/* ── Footer ── */}
-        <footer className='sp-footer'>
+        <footer className='px-6 py-9 text-center relative z-1'>
           <div className='sp-footer-inner'>
-            <div className='sp-footer-brand'>
-              <div className='sp-logo-mark sp-logo-mark--sm'>SP</div>
-              <span className='sp-logo-text sp-logo-text--sm'>
+            <div className='flex items-center gap-2'>
+              <img src={spLogo.src} alt="SharePoint" className='size-6 rounded-md object-contain' />
+              <span className='font-grotesk font-[650] text-sm tracking-tight'>
                 Awesome SharePoint
               </span>
             </div>
-            <p className='sp-footer-copy'>
+            <p className='text-[13px] text-[var(--text-muted)] m-0'>
               Built with Astro & Fluent UI. Not affiliated with Microsoft. For
               the community, by the community.
             </p>
