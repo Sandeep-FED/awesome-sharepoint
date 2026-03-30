@@ -6,16 +6,16 @@ items:
   - title: SP Formatter
     description: Chrome/Edge extension for editing and previewing column & view formatting JSON in real time.
     url: https://github.com/pnp/sp-formatter
-    tag: Extension
+    tag: Community
     tagColor: warning
   - title: SP Shortcuts
     description: Browser extension adding keyboard shortcuts for faster SharePoint site navigation.
     url: https://github.com/a1mery/sp-shortcuts-extension
-    tag: Extension
+    tag: Community
     tagColor: warning
   - title: SP Editor
     description: Chrome/Edge DevTools extension for managing scripts, styles, and properties on SharePoint sites.
     url: https://github.com/pnp/sp-editor
-    tag: Extension
+    tag: Community
     tagColor: warning
 ---

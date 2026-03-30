@@ -12,16 +12,16 @@
   --text-muted: #64748b;
 }
 .sp-light {
-  --bg-primary: #f8fafb;
+  --bg-primary: #f0f4f8;
   --bg-secondary: #ffffff;
-  --bg-card: rgba(255, 255, 255, 0.85);
-  --bg-card-hover: rgba(255, 255, 255, 1);
-  --bg-nav: rgba(255, 255, 255, 0.82);
-  --border-subtle: rgba(0, 0, 0, 0.07);
-  --border-hover: rgba(3, 131, 135, 0.35);
+  --bg-card: rgba(255, 255, 255, 0.7);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --bg-nav: rgba(255, 255, 255, 0.72);
+  --border-subtle: rgba(3, 131, 135, 0.1);
+  --border-hover: rgba(3, 131, 135, 0.4);
   --text-primary: #0f172a;
   --text-secondary: #475569;
-  --text-muted: #94a3b8;
+  --text-muted: #64748b;
 }
 
 /* ─── Root ─── */
@@ -43,7 +43,16 @@
   z-index: 0;
   opacity: 0.5;
 }
-.sp-light .orb { opacity: 0.3; }
+.sp-light .orb { opacity: 0.55; }
+.sp-light .orb-1 {
+  background: radial-gradient(circle, rgba(3, 131, 135, 0.3), transparent 70%);
+}
+.sp-light .orb-2 {
+  background: radial-gradient(circle, rgba(55, 169, 135, 0.25), transparent 70%);
+}
+.sp-light .orb-3 {
+  background: radial-gradient(circle, rgba(3, 131, 135, 0.2), transparent 70%);
+}
 .orb-1 {
   width: 600px; height: 600px; top: -200px; left: -100px;
   background: radial-gradient(circle, rgba(3, 131, 135, 0.25), transparent 70%);
@@ -155,20 +164,51 @@
   color: #fff;
   box-shadow: 0 2px 12px rgba(3, 131, 135, 0.25);
 }
-.sp-pill-btn--primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(3, 131, 135, 0.35);
-}
 .sp-pill-btn--outline {
   background: var(--bg-card);
   color: var(--text-primary);
   border: 1px solid var(--border-subtle);
   backdrop-filter: blur(8px);
 }
-.sp-pill-btn--outline:hover {
-  transform: translateY(-2px);
-  border-color: var(--border-hover);
-  box-shadow: 0 4px 16px rgba(3, 131, 135, 0.12);
+
+/* ─── Contribute button shimmer sweep ─── */
+.sp-btn-shimmer {
+  position: relative; overflow: hidden;
+}
+.sp-btn-shimmer::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.25) 50%, transparent 60%);
+  background-size: 250% 100%;
+  animation: btnShimmer 4s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes btnShimmer {
+  0%, 100% { background-position: 200% 0; }
+  50% { background-position: -50% 0; }
+}
+
+/* ─── Join button animated border glow ─── */
+.sp-btn-border-glow {
+  position: relative;
+  border-color: transparent !important;
+}
+.sp-btn-border-glow::before {
+  content: ""; position: absolute; inset: -1px;
+  border-radius: 100px; padding: 1px;
+  background: linear-gradient(var(--angle, 0deg), #038387, transparent 40%, #37a987 80%, transparent);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude; -webkit-mask-composite: xor;
+  pointer-events: none;
+  animation: borderRotate 3s linear infinite;
+}
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+@keyframes borderRotate {
+  to { --angle: 360deg; }
 }
 
 /* ─── Fluent Tab Overrides ─── */
@@ -259,21 +299,36 @@
 
 /* ─── CTA (glass card) ─── */
 .sp-cta {
-  border-radius: 28px; padding: 56px 36px;
+  border-radius: 28px; padding: 64px 40px;
   text-align: center;
-  background: var(--bg-card); backdrop-filter: blur(16px);
+  background: var(--bg-card); backdrop-filter: blur(20px);
   border: 1px solid var(--border-subtle);
   position: relative; overflow: hidden;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 4px 32px rgba(0, 0, 0, 0.08), 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+.sp-cta::before {
+  content: ""; position: absolute; inset: -1px;
+  border-radius: 29px; padding: 1px;
+  background: linear-gradient(135deg, rgba(3,131,135,0.3), transparent 50%, rgba(55,169,135,0.2));
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude; -webkit-mask-composite: xor;
+  pointer-events: none;
 }
 @media (max-width: 640px) {
-  .sp-cta { padding: 40px 24px; border-radius: 20px; }
+  .sp-cta { padding: 44px 24px; border-radius: 20px; }
 }
 .sp-cta-glow {
-  position: absolute; top: -100px; right: -100px;
-  width: 300px; height: 300px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(3, 131, 135, 0.15), transparent 70%);
+  position: absolute; top: -120px; right: -120px;
+  width: 320px; height: 320px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(3, 131, 135, 0.18), transparent 70%);
   pointer-events: none; animation: orbFloat1 15s ease-in-out infinite;
+}
+.sp-cta-glow-2 {
+  position: absolute; bottom: -100px; left: -80px;
+  width: 260px; height: 260px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(55, 169, 135, 0.12), transparent 70%);
+  pointer-events: none; animation: orbFloat2 18s ease-in-out infinite;
 }
 
 /* ─── Footer (glass pill) ─── */
@@ -290,4 +345,42 @@
     border-radius: 20px; flex-direction: column;
     gap: 8px; padding: 20px;
   }
+}
+
+/* ─── Light Theme Enhancements ─── */
+.sp-light .sp-nav-inner {
+  box-shadow: 0 4px 24px rgba(3, 131, 135, 0.08), 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+.sp-light .sp-card {
+  box-shadow: 0 2px 12px rgba(3, 131, 135, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+}
+.sp-light .sp-card:hover {
+  box-shadow: 0 12px 40px rgba(3, 131, 135, 0.14), 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+}
+.sp-light .sp-category-header {
+  box-shadow: 0 2px 8px rgba(3, 131, 135, 0.06);
+}
+.sp-light .sp-category-icon {
+  background: linear-gradient(135deg, rgba(3, 131, 135, 0.18), rgba(55, 169, 135, 0.12));
+}
+.sp-light .sp-cta {
+  box-shadow: 0 4px 32px rgba(3, 131, 135, 0.1), 0 1px 4px rgba(0, 0, 0, 0.04);
+}
+.sp-light .sp-cta::before {
+  background: linear-gradient(135deg, rgba(3,131,135,0.4), transparent 50%, rgba(55,169,135,0.3));
+}
+.sp-light .sp-footer-inner {
+  box-shadow: 0 2px 12px rgba(3, 131, 135, 0.06), 0 1px 3px rgba(0, 0, 0, 0.03);
+}
+.sp-light .sp-pill-btn--primary {
+  box-shadow: 0 2px 16px rgba(3, 131, 135, 0.3);
+}
+.sp-light .sp-pill-btn--outline {
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.04);
+}
+.sp-light .sp-tabs [role="tab"] {
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03) !important;
+}
+.sp-light .sp-tabs [role="tab"][aria-selected="true"] {
+  box-shadow: 0 4px 16px rgba(3, 131, 135, 0.3) !important;
 }

@@ -8,9 +8,7 @@ import {
 import {
   PeopleRegular,
   StarRegular,
-  ArrowRightRegular,
   HeartRegular,
-  BookOpenRegular,
   WeatherMoonRegular,
   WeatherSunnyRegular,
 } from "@fluentui/react-icons"
@@ -43,24 +41,13 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
               <img src={spLogo.src} alt="SharePoint" className='size-8 rounded-lg object-contain' />
               <span className='font-grotesk font-[650] text-[15px] tracking-tight'>Awesome SharePoint</span>
             </div>
-            <div className='flex items-center gap-1.5'>
-              <button
-                className='sp-nav-icon-btn'
-                onClick={() => setTheme(dark ? "light" : "dark")}
-                aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
-              >
-                {dark ? <WeatherSunnyRegular /> : <WeatherMoonRegular />}
-              </button>
-              <a
-                href='https://github.com/pnp'
-                target='_blank'
-                rel='noopener noreferrer'
-                className='sp-github-btn'
-              >
-                <StarRegular />
-                <span>Star on GitHub</span>
-              </a>
-            </div>
+            <button
+              className='sp-nav-icon-btn'
+              onClick={() => setTheme(dark ? "light" : "dark")}
+              aria-label={dark ? "Switch to light mode" : "Switch to dark mode"}
+            >
+              {dark ? <WeatherSunnyRegular /> : <WeatherMoonRegular />}
+            </button>
           </div>
         </nav>
 
@@ -85,19 +72,23 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
               developers and administrators.
             </p>
             <div className='flex gap-3 justify-center flex-wrap'>
-              <a href='#resources' className='sp-pill-btn sp-pill-btn--primary'>
-                <span>Explore Resources</span>
-                <ArrowRightRegular />
-              </a>
-              <a
-                href='https://learn.microsoft.com/en-us/sharepoint/'
+              <motion.a
+                href='https://github.com/pnp'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='sp-pill-btn sp-pill-btn--outline'
+                className='sp-pill-btn sp-pill-btn--primary'
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 500, damping: 15 }}
               >
-                <BookOpenRegular />
-                <span>Official Docs</span>
-              </a>
+                <motion.span
+                  style={{ display: "inline-flex" }}
+                  animate={{ rotate: [0, -15, 15, -10, 0], scale: [1, 1.2, 1, 1.15, 1] }}
+                  transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3, ease: "easeInOut" }}
+                >
+                  <StarRegular />
+                </motion.span>
+                <span>Star on GitHub</span>
+              </motion.a>
             </div>
           </motion.div>
         </section>
@@ -140,31 +131,46 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
             viewport={{ once: true, amount: 0.12 }}
           >
             <div className='sp-cta-glow' />
-            <h2 className='font-grotesk text-[clamp(1.5rem,3vw,2rem)] font-bold tracking-tight mb-3'>Contribute to Awesome SharePoint</h2>
-            <p className='text-[var(--text-secondary)] max-w-[500px] mx-auto mb-7 leading-relaxed'>
-              Know a great SharePoint resource that's missing? Contributions are
-              welcome! Help the community by sharing your favorite tools, repos,
-              and guides.
+            <div className='sp-cta-glow-2' />
+            <span className='inline-block px-4 py-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] backdrop-blur-sm font-mono text-xs tracking-wider text-[var(--text-secondary)] mb-5'>
+              Open Source
+            </span>
+            <h2 className='font-grotesk text-[clamp(1.8rem,4vw,2.8rem)] font-[800] tracking-tighter mb-4 sp-hero-title' style={{ marginBottom: 16 }}>
+              Contribute
+            </h2>
+            <p className='text-[var(--text-secondary)] text-base max-w-[460px] mx-auto mb-8 leading-relaxed'>
+              Know a great SharePoint resource? Help the community grow by
+              sharing your favorite tools, repos, and guides.
             </p>
             <div className='flex gap-3 justify-center flex-wrap'>
-              <a
+              <motion.a
                 href='https://github.com/pnp'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='sp-pill-btn sp-pill-btn--primary'
+                className='sp-pill-btn sp-pill-btn--primary sp-btn-shimmer'
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 500, damping: 15 }}
               >
-                <HeartRegular />
-                <span>Contribute</span>
-              </a>
-              <a
+                <motion.span
+                  style={{ display: "inline-flex" }}
+                  animate={{ scale: [1, 1.25, 1] }}
+                  transition={{ duration: 1.2, repeat: Infinity, repeatDelay: 2.5, ease: "easeInOut" }}
+                >
+                  <HeartRegular />
+                </motion.span>
+                <span>Contribute on GitHub</span>
+              </motion.a>
+              <motion.a
                 href='https://pnp.github.io/'
                 target='_blank'
                 rel='noopener noreferrer'
-                className='sp-pill-btn sp-pill-btn--outline'
+                className='sp-pill-btn sp-pill-btn--outline sp-btn-border-glow'
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 500, damping: 15 }}
               >
                 <PeopleRegular />
-                <span>Join PnP Community</span>
-              </a>
+                <span>Join Community</span>
+              </motion.a>
             </div>
           </motion.div>
         </section>

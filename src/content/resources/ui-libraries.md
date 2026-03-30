@@ -18,4 +18,14 @@ items:
     url: https://reactcontrols.spteckapps.com
     tag: Community
     tagColor: important
+  - title: PnP Reusable React Controls
+    description: Rich set of community React controls built specifically for SharePoint Framework solutions.
+    url: https://pnp.github.io/sp-dev-fx-controls-react/
+    tag: Community
+    tagColor: important
+  - title: PnP Property Pane Controls
+    description: Reusable property pane controls for SPFx web parts — pickers, editors, and more.
+    url: https://pnp.github.io/sp-dev-fx-property-controls/
+    tag: Community
+    tagColor: important
 ---
