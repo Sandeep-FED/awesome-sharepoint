@@ -2,8 +2,8 @@ export interface ResourceItem {
   title: string
   description: string
   url: string
-  tag: string
-  tagColor: "brand" | "warning" | "success" | "important"
+  tag?: string
+  tagColor?: "brand" | "warning" | "success" | "important"
 }
 
 export interface CategoryData {
