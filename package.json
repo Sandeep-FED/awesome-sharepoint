@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@astrojs/react": "^5.0.1",
+    "@astrojs/sitemap": "^3.7.2",
     "@fluentui/react-components": "^9.73.5",
     "@fluentui/react-icons": "^2.0.322",
     "@tailwindcss/vite": "^4.2.2",

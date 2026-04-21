@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://Sandeep-FED.github.io/awesome-sharepoint/sitemap-index.xml
