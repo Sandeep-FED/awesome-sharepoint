@@ -20,6 +20,7 @@ Essential tools and docs for building SharePoint solutions.
 | [SharePoint Developer Docs](https://learn.microsoft.com/en-us/sharepoint/dev/) | Official Microsoft documentation for SharePoint development and extensibility | Official |
 | [PnP Modern Search](https://microsoft-search.github.io/pnp-modern-search/) | Open-source modern search web parts powered by SharePoint Search & Microsoft Graph | Community |
 | [SP Live Reload](https://github.com/pnp/sp-livereload) | Enable live reload during classic SharePoint page development for faster iterations | Community |
+| [SPFx CLI](https://github.com/SharePoint/spfx) | Next-generation CLI for scaffolding SPFx projects, replacing the legacy Yeoman-based generator with a modern, open-source tool | Community |
 
 ### APIs & Libraries
 Client libraries for interacting with SharePoint and Microsoft 365 APIs.
@@ -73,7 +74,7 @@ SharePoint site design inspiration, look books, and ready-made templates.
 | Resource | Description | Tag |
 | :--- | :--- | :--- |
 | [SharePoint Look Book](https://adoption.microsoft.com/en-us/sharepoint-look-book/) | Official gallery of beautiful SharePoint site designs and templates from Microsoft | Official |
-| [LookBook 365](https://lookbook365.com/#categories) | Community-curated collection of SharePoint Online site designs organized by category | Community |
+| [LookBook 365](https://lookbook365.com/#categories) | Collection of SharePoint Online site designs organized by category, created by [SharePoint Maven](https://sharepointmaven.com) | Free |
 
 ---
 

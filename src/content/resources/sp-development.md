@@ -23,4 +23,9 @@ items:
     url: https://github.com/pnp/sp-livereload
     tag: Community
     tagColor: important
+  - title: SPFx CLI
+    description: Next-generation CLI for scaffolding SPFx projects, replacing the legacy Yeoman-based generator with a modern, open-source tool.
+    url: https://github.com/SharePoint/spfx
+    tag: Community
+    tagColor: important
 ---
