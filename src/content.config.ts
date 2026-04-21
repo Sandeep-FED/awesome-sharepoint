@@ -6,8 +6,8 @@ const resourceItemSchema = z.object({
   title: z.string(),
   description: z.string(),
   url: z.string().url(),
-  tag: z.string(),
-  tagColor: z.enum(["brand", "warning", "success", "important"]),
+  tag: z.string().optional(),
+  tagColor: z.enum(["brand", "warning", "success", "important"]).optional(),
 })
 
 const resources = defineCollection({
