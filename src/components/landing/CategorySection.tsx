@@ -56,9 +56,11 @@ export function CategorySection({ category }: { category: CategoryData }) {
           >
             <Card className='sp-card'>
               <div className='flex justify-between items-start mb-3.5'>
-                <Badge appearance='filled' color={item.tagColor} size='small'>
-                  {item.tag}
-                </Badge>
+                {item.tag && (
+                  <Badge appearance='filled' color={item.tagColor} size='small'>
+                    {item.tag}
+                  </Badge>
+                )}
                 <OpenRegular className='sp-card-arrow' />
               </div>
               <div className='font-grotesk font-[620] text-[15px] tracking-tight mb-2'>{item.title}</div>
