@@ -13,11 +13,11 @@ items:
     url: https://developer.microsoft.com/en-us/fluentui#/controls/web
     tag: Official
     tagColor: brand
-  - title: SPFx React Controls
-    description: Community-driven reusable React controls for SharePoint Framework solutions by SP Teck Apps.
+  - title: React Controls v2 by SPTeck
+    description: A comprehensive library of framework-agnostic React components built on Fluent UI 9. Designed for Vite, Next.js, and SPFx applications. Created by João Mendes (v2.5.7).
     url: https://reactcontrols.spteckapps.com
-    tag: Community
-    tagColor: important
+    tag: Free
+    tagColor: success
   - title: PnP Reusable React Controls
     description: Rich set of community React controls built specifically for SharePoint Framework solutions.
     url: https://pnp.github.io/sp-dev-fx-controls-react/
