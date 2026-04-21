@@ -28,6 +28,7 @@ import { motion } from "framer-motion"
 import { heroVariants, fadeUpVariants } from "../../animations/variants"
 import { getCategoryIcon } from "./constants"
 import { CategorySection } from "./CategorySection"
+import { BackToTop } from "./BackToTop"
 import type { CategoryData, LandingPageProps } from "./types"
 import spLogo from "../../assets/SharePoint.png"
 import "../../styles/landing.css"
@@ -338,6 +339,7 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
             </p>
           </div>
         </footer>
+        <BackToTop />
       </div>
     </FluentProvider>
   )

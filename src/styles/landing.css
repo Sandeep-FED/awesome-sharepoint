@@ -454,6 +454,36 @@
   pointer-events: none; animation: orbFloat2 18s ease-in-out infinite;
 }
 
+/* ─── Back to Top ─── */
+.sp-back-to-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 200;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-nav);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12), 0 1px 4px rgba(0, 0, 0, 0.06);
+  transition: border-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+.sp-back-to-top:hover {
+  border-color: rgba(3, 131, 135, 0.45);
+  color: #038387;
+  box-shadow: 0 4px 24px rgba(3, 131, 135, 0.2), 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+@media (max-width: 640px) {
+  .sp-back-to-top { bottom: 20px; right: 20px; }
+}
+
 /* ─── Footer (glass pill) ─── */
 .sp-footer-inner {
   max-width: 860px; margin: 0 auto; padding: 24px;
