@@ -213,8 +213,13 @@
 
 /* ─── Fluent Tab Overrides ─── */
 .sp-tabs {
-  justify-content: center; flex-wrap: wrap;
+  justify-content: center; flex-wrap: nowrap; overflow: hidden;
   margin-bottom: 36px; gap: 6px;
+}
+.sp-tabs-more-btn {
+  align-self: center;
+  border-radius: 100px !important;
+  border: 1px solid var(--border-subtle) !important;
 }
 .sp-tabs [role="tablist"] { gap: 6px !important; }
 .sp-tabs [role="tablist"]::after { display: none !important; }
