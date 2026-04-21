@@ -9,8 +9,8 @@ items:
     tag: Official
     tagColor: brand
   - title: LookBook 365
-    description: Community-curated collection of SharePoint Online site designs organized by category.
+    description: A large collection of SharePoint Online site design templates organized by category, created by SharePoint Maven.
     url: https://lookbook365.com/#categories
-    tag: Community
-    tagColor: important
+    tag: Free
+    tagColor: tip
 ---
