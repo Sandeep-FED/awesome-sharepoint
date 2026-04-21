@@ -129,6 +129,76 @@
   box-shadow: 0 4px 16px rgba(3, 131, 135, 0.35);
 }
 
+/* ─── Hero Section (full-width with dot grid) ─── */
+.sp-hero-section {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.sp-dot-grid {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(3, 131, 135, 0.45) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 75% 85% at 50% 50%, black 30%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 75% 85% at 50% 50%, black 30%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+.sp-light .sp-dot-grid {
+  background-image: radial-gradient(circle, rgba(3, 131, 135, 0.3) 1px, transparent 1px);
+}
+
+/* ─── Hero Badge ─── */
+.sp-hero-badge {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 18px;
+  border-radius: 100px;
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #038387;
+  background: rgba(3, 131, 135, 0.07);
+  border: 1px solid rgba(3, 131, 135, 0.2);
+  margin-bottom: 28px;
+  box-shadow: 0 0 24px rgba(3, 131, 135, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(8px);
+}
+.sp-hero-badge::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: 100px;
+  background: linear-gradient(90deg, rgba(3,131,135,0.6), rgba(55,169,135,0.35), rgba(3,131,135,0.6));
+  background-size: 200% 100%;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  -webkit-mask-composite: xor;
+  animation: badgeGlow 3s ease-in-out infinite;
+  pointer-events: none;
+}
+.sp-hero-badge-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: #038387;
+  box-shadow: 0 0 6px rgba(3, 131, 135, 0.8);
+  animation: dotPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+@keyframes badgeGlow {
+  0%, 100% { background-position: 0% 0; opacity: 0.6; }
+  50% { background-position: 100% 0; opacity: 1; }
+}
+@keyframes dotPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.75); }
+}
+
 /* ─── Hero Title (gradient text + shimmer) ─── */
 .sp-hero-title {
   font-family: "Space Grotesk", sans-serif;
@@ -137,7 +207,7 @@
   line-height: 1.05;
   margin: 0 0 24px;
   letter-spacing: -2px;
-  background: linear-gradient(135deg, #038387 0%, #37a987 40%, #038387 80%);
+  background: linear-gradient(135deg, #a8edea 0%, #038387 22%, #37a987 50%, #038387 75%, #a8edea 100%);
   background-size: 200% 200%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -148,6 +218,54 @@
 @keyframes shimmer {
   0%, 100% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
+}
+
+/* ─── Hero Stats ─── */
+.sp-hero-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-top: 44px;
+}
+.sp-hero-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 36px;
+}
+.sp-hero-stat:not(:last-child) {
+  border-right: 1px solid var(--border-subtle);
+}
+.sp-hero-stat-value {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #a8edea 0%, #038387 40%, #37a987 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1;
+}
+.sp-hero-stat-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 5px;
+}
+@media (max-width: 640px) {
+  .sp-hero-stat { padding: 0 20px; }
+}
+
+/* ─── Hero divider glow ─── */
+.sp-hero-divider {
+  width: 200px;
+  height: 1px;
+  margin: 48px auto 0;
+  background: linear-gradient(90deg, transparent, rgba(3,131,135,0.5), rgba(55,169,135,0.4), transparent);
 }
 
 /* ─── Pill Buttons ─── */
@@ -355,6 +473,17 @@
 /* ─── Light Theme Enhancements ─── */
 .sp-light .sp-nav-inner {
   box-shadow: 0 4px 24px rgba(3, 131, 135, 0.08), 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+.sp-light .sp-hero-badge {
+  background: rgba(3, 131, 135, 0.06);
+  color: #027578;
+  border-color: rgba(3, 131, 135, 0.25);
+}
+.sp-light .sp-hero-stat-value {
+  background: linear-gradient(135deg, #027578 0%, #038387 40%, #37a987 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 .sp-light .sp-card {
   box-shadow: 0 2px 12px rgba(3, 131, 135, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04) !important;

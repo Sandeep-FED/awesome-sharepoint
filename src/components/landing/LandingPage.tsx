@@ -113,8 +113,14 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
         <nav className='sticky top-3 z-100 px-6 max-w-[1200px] mx-auto mt-3'>
           <div className='sp-nav-inner'>
             <div className='flex items-center gap-2.5'>
-              <img src={spLogo.src} alt="SharePoint" className='size-8 rounded-lg object-contain' />
-              <span className='font-grotesk font-[650] text-[15px] tracking-tight'>Awesome SharePoint</span>
+              <img
+                src={spLogo.src}
+                alt='SharePoint'
+                className='size-8 rounded-lg object-contain'
+              />
+              <span className='font-grotesk font-[650] text-[15px] tracking-tight'>
+                Awesome SharePoint
+              </span>
             </div>
             <button
               className='sp-nav-icon-btn'
@@ -127,15 +133,18 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
         </nav>
 
         {/* ── Hero ── */}
-        <section className='relative z-1 max-w-[1200px] mx-auto px-6 pt-20 pb-12 text-center max-sm:px-5 max-sm:pt-14 max-sm:pb-9'>
+        <section className='sp-hero-section'>
+          <div className='sp-dot-grid' />
+          <div className='relative z-1 max-w-[1200px] mx-auto px-6 pt-20 pb-12 text-center max-sm:px-5 max-sm:pt-14 max-sm:pb-9'>
           <motion.div
             variants={heroVariants}
-            initial="hidden"
-            animate="visible"
+            initial='hidden'
+            animate='visible'
           >
-            <span className='inline-block px-4 py-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] backdrop-blur-sm font-mono text-xs tracking-wider text-[var(--text-secondary)] mb-6'>
+            <div className='sp-hero-badge'>
+              <span className='sp-hero-badge-dot' />
               Open Source Resource Hub
-            </span>
+            </div>
             <h1 className='sp-hero-title'>
               Awesome
               <br />
@@ -148,7 +157,7 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
             </p>
             <div className='flex gap-3 justify-center flex-wrap'>
               <motion.a
-                href='https://github.com/pnp'
+                href='https://github.com/Sandeep-FED/awesome-sharepoint'
                 target='_blank'
                 rel='noopener noreferrer'
                 className='sp-pill-btn sp-pill-btn--primary'
@@ -157,19 +166,56 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
               >
                 <motion.span
                   style={{ display: "inline-flex" }}
-                  animate={{ rotate: [0, -15, 15, -10, 0], scale: [1, 1.2, 1, 1.15, 1] }}
-                  transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 3, ease: "easeInOut" }}
+                  animate={{
+                    rotate: [0, -15, 15, -10, 0],
+                    scale: [1, 1.2, 1, 1.15, 1],
+                  }}
+                  transition={{
+                    duration: 1.5,
+                    repeat: Infinity,
+                    repeatDelay: 3,
+                    ease: "easeInOut",
+                  }}
                 >
                   <StarRegular />
                 </motion.span>
                 <span>Star on GitHub</span>
               </motion.a>
+              <motion.a
+                href='#resources'
+                className='sp-pill-btn sp-pill-btn--outline'
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: "spring", stiffness: 500, damping: 15 }}
+              >
+                <span>Explore Resources</span>
+              </motion.a>
+            </div>
+            <div className='sp-hero-stats'>
+              <div className='sp-hero-stat'>
+                <span className='sp-hero-stat-value'>
+                  {categories.reduce((s, c) => s + c.items.length, 0)}+
+                </span>
+                <span className='sp-hero-stat-label'>Resources</span>
+              </div>
+              <div className='sp-hero-stat'>
+                <span className='sp-hero-stat-value'>{categories.length}</span>
+                <span className='sp-hero-stat-label'>Categories</span>
+              </div>
+              <div className='sp-hero-stat'>
+                <span className='sp-hero-stat-value'>Free</span>
+                <span className='sp-hero-stat-label'>Always</span>
+              </div>
             </div>
           </motion.div>
+          <div className='sp-hero-divider' />
+          </div>
         </section>
 
         {/* ── Resource Filter ── */}
-        <section id='resources' className='max-w-[1200px] mx-auto px-6 pt-12 pb-4 relative z-1 overflow-hidden'>
+        <section
+          id='resources'
+          className='max-w-[1200px] mx-auto px-6 pt-12 pb-4 relative z-1 overflow-hidden'
+        >
           <Overflow minimumVisible={2}>
             <TabList
               selectedValue={activeCategory ?? "all"}
@@ -181,11 +227,15 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
               className='sp-tabs'
               size='small'
             >
-              <OverflowItem id="all" priority={activeCategory === null ? 2 : 1}>
+              <OverflowItem id='all' priority={activeCategory === null ? 2 : 1}>
                 <Tab value='all'>All</Tab>
               </OverflowItem>
               {categories.map((cat) => (
-                <OverflowItem key={cat.id} id={cat.id} priority={activeCategory === cat.id ? 2 : 1}>
+                <OverflowItem
+                  key={cat.id}
+                  id={cat.id}
+                  priority={activeCategory === cat.id ? 2 : 1}
+                >
                   <Tab value={cat.id} icon={getCategoryIcon(cat.id)}>
                     {cat.title}
                   </Tab>
@@ -212,8 +262,8 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
           <motion.div
             className='sp-cta'
             variants={fadeUpVariants}
-            initial="hidden"
-            whileInView="visible"
+            initial='hidden'
+            whileInView='visible'
             viewport={{ once: true, amount: 0.12 }}
           >
             <div className='sp-cta-glow' />
@@ -221,7 +271,10 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
             <span className='inline-block px-4 py-1.5 rounded-full border border-[var(--border-subtle)] bg-[var(--bg-card)] backdrop-blur-sm font-mono text-xs tracking-wider text-[var(--text-secondary)] mb-5'>
               Open Source
             </span>
-            <h2 className='font-grotesk text-[clamp(1.8rem,4vw,2.8rem)] font-[800] tracking-tighter mb-4 sp-hero-title' style={{ marginBottom: 16 }}>
+            <h2
+              className='font-grotesk text-[clamp(1.8rem,4vw,2.8rem)] font-[800] tracking-tighter mb-4 sp-hero-title'
+              style={{ marginBottom: 16 }}
+            >
               Contribute
             </h2>
             <p className='text-[var(--text-secondary)] text-base max-w-[460px] mx-auto mb-8 leading-relaxed'>
@@ -240,7 +293,12 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
                 <motion.span
                   style={{ display: "inline-flex" }}
                   animate={{ scale: [1, 1.25, 1] }}
-                  transition={{ duration: 1.2, repeat: Infinity, repeatDelay: 2.5, ease: "easeInOut" }}
+                  transition={{
+                    duration: 1.2,
+                    repeat: Infinity,
+                    repeatDelay: 2.5,
+                    ease: "easeInOut",
+                  }}
                 >
                   <HeartRegular />
                 </motion.span>
@@ -265,7 +323,11 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
         <footer className='px-6 py-9 text-center relative z-1'>
           <div className='sp-footer-inner'>
             <div className='flex items-center gap-2'>
-              <img src={spLogo.src} alt="SharePoint" className='size-6 rounded-md object-contain' />
+              <img
+                src={spLogo.src}
+                alt='SharePoint'
+                className='size-6 rounded-md object-contain'
+              />
               <span className='font-grotesk font-[650] text-sm tracking-tight'>
                 Awesome SharePoint
               </span>
