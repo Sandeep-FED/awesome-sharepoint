@@ -94,6 +94,13 @@ SharePoint and Microsoft 365 YouTube channels for tutorials, tips, and demos.
 | [SharePoint Wizard (Ami Diamond)](https://www.youtube.com/@SharePointWizard) | SharePoint tips, tricks, best practices, and new features — including Copilot and SharePoint Online — from an IT pro with over 15 years of experience |
 | [Swami Nawale](https://www.youtube.com/@swaminawale/videos) | Hands-on solution walkthroughs across Microsoft 365, SharePoint, Power Apps, Power Automate, SPFx, and Microsoft Copilot by a Microsoft MVP in M365 Development |
 
+### SharePoint AI
+AI skills, agents, and Copilot resources for Microsoft 365 SharePoint.
+
+| Resource | Description | Tag |
+| :--- | :--- | :--- |
+| [SharePoint AI Skills](https://github.com/zrosenfield/sharepoint-ai-skills) | Curated library of AI skills and end-to-end demo setups for the latest AI features in Microsoft 365 SharePoint, by [Zach Rosenfield](https://github.com/zrosenfield) | Community |
+
 ---
 
 ## Development

@@ -9,6 +9,7 @@ import {
   BookOpenRegular,
   PaintBrushRegular,
   VideoRegular,
+  BotRegular,
 } from "@fluentui/react-icons"
 
 const categoryIconMap: Record<string, React.ReactElement> = {
@@ -20,6 +21,7 @@ const categoryIconMap: Record<string, React.ReactElement> = {
   samples: <StarRegular />,
   "design-templates": <PaintBrushRegular />,
   "youtube-channels": <VideoRegular />,
+  "sharepoint-ai": <BotRegular />,
 }
 
 export function getCategoryIcon(categoryId: string): React.ReactElement {
