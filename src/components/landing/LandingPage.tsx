@@ -4,6 +4,16 @@ import {
   webLightTheme,
   TabList,
   Tab,
+  Overflow,
+  OverflowItem,
+  useOverflowMenu,
+  useIsOverflowItemVisible,
+  Menu,
+  MenuItem,
+  MenuList,
+  MenuPopover,
+  MenuTrigger,
+  Button,
 } from "@fluentui/react-components"
 import {
   PeopleRegular,
@@ -11,15 +21,80 @@ import {
   HeartRegular,
   WeatherMoonRegular,
   WeatherSunnyRegular,
+  MoreHorizontalRegular,
 } from "@fluentui/react-icons"
-import { useState } from "react"
+import { useState, type ReactNode, type ReactElement } from "react"
 import { motion } from "framer-motion"
 import { heroVariants, fadeUpVariants } from "../../animations/variants"
 import { getCategoryIcon } from "./constants"
 import { CategorySection } from "./CategorySection"
-import type { LandingPageProps } from "./types"
+import type { CategoryData, LandingPageProps } from "./types"
 import spLogo from "../../assets/SharePoint.png"
 import "../../styles/landing.css"
+
+// ── Overflow helpers ──────────────────────────────────────────────────────────
+
+function OverflowTabMenuItem({
+  id,
+  label,
+  icon,
+  onClick,
+}: {
+  id: string
+  label: string
+  icon?: ReactNode
+  onClick: () => void
+}) {
+  const isVisible = useIsOverflowItemVisible(id)
+  if (isVisible) return null
+  return (
+    <MenuItem icon={icon as ReactElement} onClick={onClick}>
+      {label}
+    </MenuItem>
+  )
+}
+
+function TabOverflowMenu({
+  categories,
+  activeCategory,
+  onSelect,
+}: {
+  categories: CategoryData[]
+  activeCategory: string | null
+  onSelect: (id: string | null) => void
+}) {
+  const { ref, isOverflowing, overflowCount } = useOverflowMenu<HTMLButtonElement>()
+  if (!isOverflowing) return null
+  return (
+    <Menu hasIcons>
+      <MenuTrigger disableButtonEnhancement>
+        <Button
+          ref={ref}
+          appearance="transparent"
+          icon={<MoreHorizontalRegular />}
+          aria-label={`${overflowCount} more tabs`}
+          role="tab"
+          size="small"
+          className="sp-tabs-more-btn"
+        />
+      </MenuTrigger>
+      <MenuPopover>
+        <MenuList>
+          <OverflowTabMenuItem id="all" label="All" onClick={() => onSelect(null)} />
+          {categories.map((cat) => (
+            <OverflowTabMenuItem
+              key={cat.id}
+              id={cat.id}
+              label={cat.title}
+              icon={getCategoryIcon(cat.id)}
+              onClick={() => onSelect(cat.id)}
+            />
+          ))}
+        </MenuList>
+      </MenuPopover>
+    </Menu>
+  )
+}
 
 export default function LandingPage({ categories = [] }: LandingPageProps) {
   const [activeCategory, setActiveCategory] = useState<string | null>(null)
@@ -94,24 +169,35 @@ export default function LandingPage({ categories = [] }: LandingPageProps) {
         </section>
 
         {/* ── Resource Filter ── */}
-        <section id='resources' className='max-w-[1200px] mx-auto px-6 pt-12 pb-4 relative z-1'>
-          <TabList
-            selectedValue={activeCategory ?? "all"}
-            onTabSelect={(_, data) =>
-              setActiveCategory(
-                data.value === "all" ? null : (data.value as string),
-              )
-            }
-            className='sp-tabs'
-            size='small'
-          >
-            <Tab value='all'>All</Tab>
-            {categories.map((cat) => (
-              <Tab key={cat.id} value={cat.id} icon={getCategoryIcon(cat.id)}>
-                {cat.title}
-              </Tab>
-            ))}
-          </TabList>
+        <section id='resources' className='max-w-[1200px] mx-auto px-6 pt-12 pb-4 relative z-1 overflow-hidden'>
+          <Overflow minimumVisible={2}>
+            <TabList
+              selectedValue={activeCategory ?? "all"}
+              onTabSelect={(_, data) =>
+                setActiveCategory(
+                  data.value === "all" ? null : (data.value as string),
+                )
+              }
+              className='sp-tabs'
+              size='small'
+            >
+              <OverflowItem id="all" priority={activeCategory === null ? 2 : 1}>
+                <Tab value='all'>All</Tab>
+              </OverflowItem>
+              {categories.map((cat) => (
+                <OverflowItem key={cat.id} id={cat.id} priority={activeCategory === cat.id ? 2 : 1}>
+                  <Tab value={cat.id} icon={getCategoryIcon(cat.id)}>
+                    {cat.title}
+                  </Tab>
+                </OverflowItem>
+              ))}
+              <TabOverflowMenu
+                categories={categories}
+                activeCategory={activeCategory}
+                onSelect={setActiveCategory}
+              />
+            </TabList>
+          </Overflow>
         </section>
 
         {/* ── Resource Cards ── */}
