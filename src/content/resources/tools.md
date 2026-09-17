@@ -18,4 +18,9 @@ items:
     url: https://github.com/pnp/sp-editor
     tag: Community
     tagColor: important
+  - title: SP Permission Analyzer
+    description: Read-only CLI that explains why a user has access to a SharePoint site and audits a site collection for broken inheritance, orphaned SIDs, and broad-audience grants (SharePoint Server on-premises).
+    url: https://github.com/a-kazemi/sp-permission-analyzer
+    tag: Community
+    tagColor: important
 ---
